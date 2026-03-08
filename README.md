@@ -25,4 +25,4 @@ A minimal, browser-based notepad built with HTML, CSS, and Vanilla JavaScript us
 -Dark / Light mode toggle
 -Export notes as .txt
 -Markdown support
--Cloud sync (Firebase / Supabase)##
+-Cloud sync (Firebase / Supabase)
