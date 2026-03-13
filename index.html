@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ── SIDEBAR ──────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="app-title">Notes</div>
+
+      <div class="search-wrap">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input class="search-input" type="text" placeholder="Search" oninput="searchNotes(this.value)"/>
+      </div>
+
+      <button class="new-btn" onclick="addNote()">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+        New Note
+      </button>
+    </div>
+
+    <div class="note-list" id="noteList"></div>
+  </aside>
+
+  <!-- ── EDITOR ───────────────────────────────────────────── -->
+  <div class="editor-wrap">
+
+    <!-- Empty / welcome state -->
+    <div class="welcome" id="welcomeScreen">
+      <div class="welcome-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a0a0a0" stroke-width="1.7">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+      </div>
+      <h2>No note open</h2>
+      <p>Select a note from the sidebar or create a new one.</p>
+    </div>
+
+    <!-- Active editor (shown when a note is open) -->
+    <div id="activeEditor" style="display:none; flex-direction:column; height:100%;">
+
+      <!-- Top bar -->
+      <div class="editor-bar">
+        <div class="bar-left">
+          <span class="bar-date" id="noteDate"></span>
+          <span class="save-status" id="saveStatus"></span>
+        </div>
+
+        <!-- Formatting toolbar -->
+        <div class="toolbar">
+          <button class="tb-btn" title="Bold"      onclick="fmt('bold')"><b>B</b></button>
+          <button class="tb-btn" title="Italic"    onclick="fmt('italic')"><i>I</i></button>
+          <button class="tb-btn" title="Underline" onclick="fmt('underline')"><u>U</u></button>
+          <div class="tb-sep"></div>
+          <button class="tb-btn" title="Bullet list" onclick="fmt('insertUnorderedList')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="9" y1="6" x2="20" y2="6"/>
+              <line x1="9" y1="12" x2="20" y2="12"/>
+              <line x1="9" y1="18" x2="20" y2="18"/>
+              <circle cx="4" cy="6"  r="1.5" fill="currentColor" stroke="none"/>
+              <circle cx="4" cy="12" r="1.5" fill="currentColor" stroke="none"/>
+              <circle cx="4" cy="18" r="1.5" fill="currentColor" stroke="none"/>
+            </svg>
+          </button>
+          <button class="tb-btn" title="Numbered list" onclick="fmt('insertOrderedList')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="10" y1="6"  x2="21" y2="6"/>
+              <line x1="10" y1="12" x2="21" y2="12"/>
+              <line x1="10" y1="18" x2="21" y2="18"/>
+              <path d="M4 6h1v4M4 10h2M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/>
+            </svg>
+          </button>
+          <div class="tb-sep"></div>
+        </div>
+
+        <button class="act-btn btn-save" id="saveBtn" onclick="saveNote()" disabled>Save</button>
+        <button class="act-btn btn-delete" onclick="deleteNote()">Delete</button>
+      </div>
+
+      <!-- Editable body -->
+      <div class="editor-body" id="editorBody">
+        <input
+          type="text"
+          id="noteTitle"
+          placeholder="Title"
+          autocomplete="off"
+          oninput="markUnsaved()"
+        />
+        <hr class="divider"/>
+        <div
+          id="noteContent"
+          contenteditable="true"
+          data-placeholder="Start writing…"
+          oninput="markUnsaved(); updateWordCount()"
+          onkeydown="handleKey(event)"
+        ></div>
+      </div>
+
+      <!-- Footer -->
+      <div class="editor-footer">
+        <span class="word-count" id="wordCount">0 words</span>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
